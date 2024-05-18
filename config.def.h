@@ -88,7 +88,7 @@ int allowaltscreen = 1;
 
 /* allow certain non-interactive (insecure) window operations such as:
    setting the clipboard text */
-int allowwindowops = 0;
+int allowwindowops = 1;
 
 /*
  * draw latency range in ms - from new content/keypress/etc until drawing.
@@ -165,7 +165,7 @@ unsigned int tabspaces = 8;
 
 #if ALPHA_PATCH
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 0.85;
 #if ALPHA_GRADIENT_PATCH
 float grad_alpha = 0.54; //alpha value that'll change
 float stat_alpha = 0.46; //constant alpha value that'll get added to grad_alpha
@@ -178,24 +178,24 @@ float alphaUnfocused = 0.6;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"black",
-	"red3",
-	"green3",
-	"yellow3",
-	"blue2",
-	"magenta3",
-	"cyan3",
-	"gray90",
+	"#000000",
+	"#cc0403",
+	"#19cb00",
+	"#cecb00",
+	"#0d73cc",
+	"#cb1ed1",
+	"#0dcdcd",
+	"#dddddd",
 
 	/* 8 bright colors */
-	"gray50",
-	"red",
-	"green",
-	"yellow",
-	"#5c5cff",
-	"magenta",
-	"cyan",
-	"white",
+	"#767676",
+	"#f2201f",
+	"#23fd00",
+	"#fffd00",
+	"#1a8fff",
+	"#fd28ff",
+	"#14ffff",
+	"#ffffff",
 
 	[255] = 0,
 
@@ -395,6 +395,9 @@ static char *setbgcolorcmd[] = { "/bin/sh", "-c",
 #endif // EXTERNALPIPE_PATCH
 
 static Shortcut shortcuts[] = {
+	{ ControlMask,          XK_equal,       zoom,            {.f = +1} },
+	{ ControlMask,          XK_minus,       zoom,            {.f = -1} },
+	{ ControlMask,          XK_v,           clippaste,       {.i =  0} },
 	/* mask                 keysym          function         argument   screen */
 	{ XK_ANY_MOD,           XK_Break,       sendbreak,       {.i =  0} },
 	{ ControlMask,          XK_Print,       toggleprinter,   {.i =  0} },
@@ -500,6 +503,8 @@ static uint ignoremod = Mod2Mask|XK_SWITCH_MOD;
  * world. Please decide about changes wisely.
  */
 static Key key[] = {
+	{ XK_Tab,           ControlMask,    "\033[1;5I",     0,    0},
+	{ XK_ISO_Left_Tab,  ControlMask|ShiftMask,      "\033[1;6I",        0,    0},
 	/* keysym           mask            string      appkey appcursor */
 	{ XK_KP_Home,       ShiftMask,      "\033[2J",       0,   -1},
 	{ XK_KP_Home,       ShiftMask,      "\033[1;2H",     0,   +1},
